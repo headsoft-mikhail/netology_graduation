@@ -1,0 +1,148 @@
+# примеры API-запросов доступных для всех пользователей
+
+@baseUrl = http://127.0.0.1:8000/api/v1
+
+# @email = "hello2@hello.ru"
+@email = "maafanasiev@mail.ru"
+@password = "new_password2"
+@confirm_token = "9f35a"
+@session_token = c759b554dc42ef65ec5a287e5850a9a0d66dec9b
+@chng_pswrd_token = "217f6"
+
+###
+# создать пользователя
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+  "first_name": "user1_first_name",
+  "last_name": "user1_last_name",
+  "email": {{email}},
+  "password": {{password}},
+  "type": "shop"
+}
+
+###
+#активировать пользователя
+POST {{baseUrl}}/user/register/confirm
+Content-Type: application/json
+
+{
+  "token": {{confirm_token}},
+  "email": {{email}}
+}
+
+###
+#логин
+POST {{baseUrl}}/user/login
+Content-Type: application/json
+
+{
+  "password": {{password}},
+  "email": {{email}}
+}
+
+###
+#логаут
+DELETE {{baseUrl}}/user/login
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# получить данные пользователя
+GET {{baseUrl}}/user/details
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# изменить данные пользователя
+POST {{baseUrl}}/user/details
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{
+  "first_name": "new_first_name"
+}
+
+###
+# сброс пароля
+POST {{baseUrl}}/user/password_reset
+Content-Type: application/json
+
+{
+  "email": {{email}}
+}
+
+###
+# сброс пароля - подтверждение
+POST {{baseUrl}}/user/password_reset/confirm
+Content-Type: application/json
+
+{
+  "email": {{email}},
+  "password": "new_password2",
+  "token": {{chng_pswrd_token}}
+}
+
+###
+# создать контакт пользователя
+POST {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{
+  "city": "Новиград]",
+  "street": "Ленина",
+  "phone": "89051234567",
+  "house": "12"
+}
+
+###
+# получить контакты пользователя
+GET {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# изменить контакт пользователя
+PUT {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{
+  "id": "8",
+  "street": "Центральная",
+  "house": "1"
+}
+
+###
+# удалить контакт пользователя
+DELETE {{baseUrl}}/user/contact
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{
+  "items": "5, 7,9,10"
+}
+
+
+###
+# поиск товаров
+GET {{baseUrl}}/products?category_id=224&shop_id=3
+Content-Type: application/json
+
+###
+# список категорий
+GET {{baseUrl}}/categories
+Content-Type: application/json
+
+
+###
+# список магазинов
+GET {{baseUrl}}/shops
+Content-Type: application/json
+
+###
+# получить данные магазина
+GET {{baseUrl}}/shop/info?id=3
+Content-Type: application/json

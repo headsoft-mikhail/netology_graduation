@@ -1,0 +1,64 @@
+# примеры API-запросов доступных только для магазинов
+
+@baseUrl = http://127.0.0.1:8000/api/v1
+
+@email = "hello@hello.ru"
+@email = "a.mike@bk.ru"
+@password = "new_password2"
+@confirm_token = "2f3c9"
+@session_token = 23f685eb7de60671ca5a5cb934bdbb98f738c63a
+@chng_pswrd_token = "217f6"
+@url = "https://raw.githubusercontent.com/netology-code/python-final-diplom/master/data/shop1.yaml"
+
+###
+# создать магазин
+POST {{baseUrl}}/shop/info
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{
+  "url": {{url}},
+  "name": "shop_name",
+  "state": "false"
+}
+
+###
+# обновить данные магазина
+PUT {{baseUrl}}/shop/info
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{
+  "name": "shop_name",
+  "state": "true"
+}
+
+###
+# получить данные своего магазина
+GET {{baseUrl}}/shop/info
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# получить заказы своего магазина
+GET {{baseUrl}}/orders
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# получить данные заказа
+GET {{baseUrl}}/order?id=8
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+
+###
+# изменить статус заказа (для администратора)
+PUT {{baseUrl}}/order
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{
+  "id": 7,
+  "state": "assembled"
+}

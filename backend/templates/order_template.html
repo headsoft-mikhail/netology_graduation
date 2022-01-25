@@ -1,0 +1,14 @@
+<html>
+<h2>Заказ №{{ order_id }}</h2>
+<table>
+<tr><th>Арт.площадки</th><th>Арт.поставщика</th><th>Модель</th><th>Цена</th><th>Кол-во</th></tr>
+    {% for position in invoice %}
+        <tr>
+            {% for parameter in position %}
+                <th>{{parameter}}</th>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+{{ additional_text }}
+<html>

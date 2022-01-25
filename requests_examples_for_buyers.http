@@ -1,0 +1,72 @@
+# примеры API-запросов доступных только для покупателей
+
+@baseUrl = http://127.0.0.1:8000/api/v1
+
+@email = "hello@hello.ru"
+@email = "maafanasiev@mail.ru"
+@password = "new_password2"
+@confirm_token = "2f3c9"
+@session_token = c759b554dc42ef65ec5a287e5850a9a0d66dec9b
+@chng_pswrd_token = "217f6"
+
+###
+# получить корзину
+GET {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# добавить товар в корзину
+POST {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{ 
+  "product_info": 14, 
+  "quantity": 1
+}
+
+###
+# изменить количество товара в корзине
+PUT {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{ 
+  "id": 4, 
+  "quantity": 2
+}
+
+###
+# удалить товар из корзины
+DELETE {{baseUrl}}/basket
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{ 
+  "id": "all"
+}
+
+
+###
+# получить мои заказы
+GET {{baseUrl}}/orders
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# детали заказа
+GET {{baseUrl}}/order?id=8
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+###
+# разместить заказ из корзины
+POST {{baseUrl}}/order
+Content-Type: application/json
+Authorization: Token {{session_token}}
+
+{ 
+  "id": 9, 
+  "contact": 8
+}
