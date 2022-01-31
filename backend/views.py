@@ -59,7 +59,6 @@ class RegisterAccount(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data['password'])
                     user.save()
-                    # TODO activation
                     # token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user.id)
                     # print(token)
                     new_user_registered.send(sender=self.__class__, instance=self, user_id=user.id)
@@ -108,6 +107,9 @@ class LoginAccount(APIView):
 
     # авторизация
     def post(self, request, *args, **kwargs):
+        """
+        Вход в аккаунт с указанием "password" и "email"
+        """
         if {'email', 'password'}.issubset(request.data):
             user = authenticate(request, username=request.data['email'], password=request.data['password'])
             if user is not None:
@@ -126,6 +128,9 @@ class LoginAccount(APIView):
 
     # logout
     def delete(self, request, *args, **kwargs):
+        """
+        Выход из аккаунта
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -146,6 +151,9 @@ class AccountDetails(APIView):
 
     # получить данные
     def get(self, request, *args, **kwargs):
+        """
+        Получить данные пользователя
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -156,6 +164,9 @@ class AccountDetails(APIView):
 
     # изменение данных пользователя
     def post(self, request, *args, **kwargs):
+        """
+        Изменить данные пользователя, передав изменяемые параметры
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -202,6 +213,9 @@ class ContactView(APIView):
 
     # получить контакты пользователя
     def get(self, request, *args, **kwargs):
+        """
+        Получить контакты пользователя.
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -214,6 +228,10 @@ class ContactView(APIView):
 
     # добавить новый контакт
     def post(self, request, *args, **kwargs):
+        """
+        Создать контакт пользователя.
+        Обязательные параметры: "city", "street", "phone", "house".
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -241,6 +259,9 @@ class ContactView(APIView):
 
     # редактировать контакт
     def put(self, request, *args, **kwargs):
+        """
+        Изменить контакт пользователя.
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -268,6 +289,10 @@ class ContactView(APIView):
 
     # удалить контакт
     def delete(self, request, *args, **kwargs):
+        """
+        Удалить контакт(ы) пользователя.
+        Ожидаемый параметр - "items" - список id контактов через запятую.
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -300,6 +325,9 @@ class ShopInfo(ListAPIView):
     """
 
     def get(self, request, *args, **kwargs):
+        """
+        Получить данные своего магазина
+        """
         shop_id = request.query_params.get('id')
         if shop_id:
             shop = Shop.objects.filter(id=shop_id)
@@ -322,6 +350,10 @@ class ShopInfo(ListAPIView):
                                 json_dumps_params={'ensure_ascii': False})
 
     def post(self, request, *args, **kwargs):
+        """
+        Создать магазин.
+        Ожидаемые параметры: "url", "name", "state".
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -388,6 +420,10 @@ class ShopInfo(ListAPIView):
             return JsonResponse({'Status': True}, status=201)
 
     def put(self, request, *args, **kwargs):
+        """
+        Обновить данные магазина.
+        Ожидаемые параметры: "url", "name", "state".
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -504,6 +540,9 @@ class BasketView(APIView):
 
     # получить корзину
     def get(self, request, *args, **kwargs):
+        """
+        Получить корзину
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -524,6 +563,10 @@ class BasketView(APIView):
 
     # добавить товар в корзину
     def post(self, request, *args, **kwargs):
+        """
+        Добавить товар в корзину.
+        Обязательные параметры: "product_info", "quantity"
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -562,6 +605,10 @@ class BasketView(APIView):
 
     # изменить количество товара в корзине
     def put(self, request, *args, **kwargs):
+        """
+        Изменить количество товара в корзине.
+        Обязательные параметры: "id", "quantity"
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Необходима авторизация'},
                                 status=403,
@@ -595,6 +642,10 @@ class BasketView(APIView):
 
     # удалить товар из корзины / очистить корзину
     def delete(self, request, *args, **kwargs):
+        """
+        Удалить товар из корзины.
+        Обязательныы параметр "id", для удаления всех товаров из корзины - указать значение "all"
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False, 'Error': 'Необходима авторизация'},
                                 status=403,
@@ -635,7 +686,7 @@ class BasketView(APIView):
 
 class OrdersView(APIView):
     """
-    Класс для получения своих заказов
+    Класс для получения своих заказов/ заказов своего магазина
     """
 
     def get(self, request, *args, **kwargs):
@@ -669,6 +720,9 @@ class OrderView(APIView):
 
     # получить данные заказа
     def get(self, request, *args, **kwargs):
+        """
+        Получить данные заказа по "id"
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -708,6 +762,10 @@ class OrderView(APIView):
 
     # разместить заказ из корзины
     def post(self, request, *args, **kwargs):
+        """
+        Разместить заказ из корзины.
+        Обязательные параметры: "id", "contact"
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},
@@ -746,6 +804,10 @@ class OrderView(APIView):
 
     # изменить статус заказа
     def put(self, request, *args, **kwargs):
+        """
+        Изменить статус заказа (для администратора)
+        Обязательные параметры: "id", "state"
+        """
         if not request.user.is_authenticated:
             return JsonResponse({'Status': False,
                                  'Error': 'Необходима авторизация'},

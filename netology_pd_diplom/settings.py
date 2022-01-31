@@ -17,6 +17,7 @@ import tokens
 def get_comma_separated_hosts(hosts: str) -> list:
     return hosts.replace(' ', '').split(',')
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_rest_passwordreset',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -137,7 +139,6 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'backend.User'
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
 EMAIL_HOST = tokens.email_host
@@ -162,6 +163,18 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
+
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/minute',
+        'user': '60/minute'
+    },
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -176,4 +189,10 @@ DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
         "min_length": 5,
         "max_length": 5
     }
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'GraduationShop API',
+    'DESCRIPTION': 'Trading floor like ozon',
+    'VERSION': '1.0.0',
 }
