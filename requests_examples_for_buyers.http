@@ -6,7 +6,7 @@
 @email = "maafanasiev@mail.ru"
 @password = "new_password2"
 @confirm_token = "2f3c9"
-@session_token = c759b554dc42ef65ec5a287e5850a9a0d66dec9b
+@session_token = 2686fa12c322b7f3113bd9685a2d4eda1edb2935
 @chng_pswrd_token = "217f6"
 
 ###
@@ -67,6 +67,6 @@ Content-Type: application/json
 Authorization: Token {{session_token}}
 
 { 
-  "id": 9, 
-  "contact": 8
+  "id": 12, 
+  "contact": 14
 }

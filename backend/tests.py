@@ -1,3 +1,5 @@
+import time
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 from backend.models import ConfirmEmailToken, Shop
@@ -231,7 +233,7 @@ class TestAPI(APITestCase):
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # get buyer orders
+        # get buyer's orders
         url = '/api/v1/orders'
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)

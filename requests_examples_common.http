@@ -5,9 +5,9 @@
 # @email = "hello2@hello.ru"
 @email = "maafanasiev@mail.ru"
 @password = "new_password2"
-@confirm_token = "9f35a"
-@session_token = c759b554dc42ef65ec5a287e5850a9a0d66dec9b
-@chng_pswrd_token = "217f6"
+@confirm_token = "24340"
+@session_token = 2686fa12c322b7f3113bd9685a2d4eda1edb2935
+@chng_pswrd_token = "4e2e5"
 
 ###
 # создать пользователя
@@ -19,7 +19,7 @@ Content-Type: application/json
   "last_name": "user1_last_name",
   "email": {{email}},
   "password": {{password}},
-  "type": "shop"
+  "type": "buyer"
 }
 
 ###
@@ -91,7 +91,7 @@ Content-Type: application/json
 Authorization: Token {{session_token}}
 
 {
-  "city": "Новиград]",
+  "city": "Новиград",
   "street": "Ленина",
   "phone": "89051234567",
   "house": "12"

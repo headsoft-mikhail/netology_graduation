@@ -14,6 +14,7 @@ import os
 import tokens
 
 
+# hosts
 def get_comma_separated_hosts(hosts: str) -> list:
     return hosts.replace(' ', '').split(',')
 
@@ -170,8 +171,8 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '10/minute',
-        'user': '60/minute'
+        'anon': '60/minute',
+        'user': '300/minute'
     },
 
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -193,6 +194,20 @@ DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'GraduationShop API',
-    'DESCRIPTION': 'Trading floor like ozon',
+    'DESCRIPTION': 'Noname trading floor',
     'VERSION': '1.0.0',
 }
+
+# Redis settings
+REDIS_HOST = tokens.redis_host
+REDIS_PORT = tokens.redis_port
+
+# Celery settings
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 3600,
+    'max_retries': 3}
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

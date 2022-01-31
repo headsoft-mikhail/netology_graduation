@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: GraduationShop API
   version: 1.0.0
-  description: Trading floor like ozon
+  description: Noname trading floor
 paths:
   /api/v1/basket:
     get:

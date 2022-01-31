@@ -1,8 +1,8 @@
-django
-djangorestframework
+django~=4.0.1
+djangorestframework~=3.13.1
 django-rest-passwordreset
 psycopg2-binary
-pyyaml
+pyyaml~=6.0
 ujson
 requestsasgiref==3.5.0
 backports.zoneinfo==0.2.1
@@ -20,3 +20,4 @@ requests==2.27.1
 sqlparse==0.4.2
 ujson==5.1.0
 urllib3==1.26.8
+celery~=5.2.3

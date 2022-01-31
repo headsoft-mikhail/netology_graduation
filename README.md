@@ -83,8 +83,15 @@
 7. Добавлена автогенерация документации в рамках пакета DRF-Spectacular 
     * Т.к. в проекте использованы APIViews, авторгенерация работает не полностью корректно, но суть понятна.  
 
-    Для генерации файла с документацией выполнить команду:
+    Для генерации файла ([schema.yml](https://github.com/headsoft-mikhail/netology_graduation/blob/master/backend/schema.yml)) с документацией выполнить команду:
 ```
 python manage.py spectacular --file schema.yml
 ```
-8. 
+8. Отправка почтовых сообщений вынесена в celery-приложение ([netology_pd_diplom/celery.py](https://github.com/headsoft-mikhail/netology_graduation/blob/master/netology_pd_diplom/celery.py), [backend/tasks.py](https://github.com/headsoft-mikhail/netology_graduation/blob/master/backend/tasks.py)).  Для запуска redis - выполнить команду:
+```
+docker run -d -p 6379:6379 redis
+```
+Для запуска celery выполнить команду:
+```
+celery -A netology_pd_diplom worker -l info
+```

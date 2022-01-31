@@ -14,3 +14,6 @@ DATA_FILE_URL = 'https://raw.githubusercontent.com/netology-code/python-final-di
 TEST_EMAIL_1 = 'xxxxxxx@xx.xx'
 TEST_EMAIL_2 = 'xxxxxx@xx.xx'
 TEST_PASSWORD = 'xxxxxxx'
+
+redis_host = '0.0.0.0'
+redis_port = '6379'

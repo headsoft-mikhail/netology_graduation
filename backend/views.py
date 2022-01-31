@@ -18,7 +18,7 @@ from backend.models import Shop, Category, Product, ProductInfo, Parameter, Prod
     Contact, ConfirmEmailToken, USER_TYPE_CHOICES, ORDER_STATE_CHOICES
 from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, ShopSerializerExtended, \
     ProductInfoSerializer, OrderItemSerializer, OrderSerializer, ContactSerializer
-from backend.signals import new_user_registered, order_state_changed
+from backend.tasks import on_new_user_registered, on_order_state_changed
 
 
 class RegisterAccount(APIView):
@@ -59,9 +59,9 @@ class RegisterAccount(APIView):
                     user = user_serializer.save()
                     user.set_password(request.data['password'])
                     user.save()
-                    # token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user.id)
-                    # print(token)
-                    new_user_registered.send(sender=self.__class__, instance=self, user_id=user.id)
+                    token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user.id)
+                    on_new_user_registered.delay(self.request.data['email'], token.key)
+                    # new_user_registered.send(sender=self.__class__, instance=self, token=token)
                     return JsonResponse({'Status': True}, status=201)
                 else:
                     return JsonResponse({'Status': False,
@@ -792,10 +792,7 @@ class OrderView(APIView):
                                         json_dumps_params={'ensure_ascii': False})
                 else:
                     if is_updated:
-                        order_state_changed.send(sender=self.__class__,
-                                                 order_id=request.data['id'],
-                                                 user_id=request.user.id,
-                                                 state=ORDER_STATE_CHOICES[1][0])
+                        on_order_state_changed.delay(request.data['id'], request.user.id, ORDER_STATE_CHOICES[1][0])
                         return JsonResponse({'Status': True}, status=201)
         return JsonResponse({'Status': False,
                              'Errors': 'Не указаны все необходимые аргументы'},
@@ -831,10 +828,7 @@ class OrderView(APIView):
                                         json_dumps_params={'ensure_ascii': False})
                 else:
                     if is_updated:
-                        order_state_changed.send(sender=self.__class__,
-                                                 user_id=order_owner,
-                                                 order_id=request.data['id'],
-                                                 state=request.data['state'])
+                        on_order_state_changed.delay(order_owner, request.data['id'], request.data['state'])
                         return JsonResponse({'Status': True},
                                             status=201)
         return JsonResponse({'Status': False,
